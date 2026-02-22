@@ -2,48 +2,24 @@ import logo from './logo.svg';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import AddEmployee from './components/AddEmployee';
 function App() {
   const[page,setpage]=useState("Home")
-const [employees, setEmployees] = useState([
-  {
-    id: 1,
-    name: "John Doe",
-    email: "johndoe@example.com",
-    role: "Software Engineer",
-    department: "IT",
-    status: "Active",
-    salary: "$80,000",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "janesmith@example.com",
-    role: "HR Manager",
-    department: "HR",
-    status: "Active",
-    salary: "$75,000",
-  },
-  {
-    id: 3,
-    name: "Michael Brown",
-    email: "michaelb@example.com",
-    role: "Sales Executive",
-    department: "Sales",
-    status: "Inactive",
-    salary: "$60,000",
-  },
-  {
-    id: 4,
-    name: "Michael",
-    email: "michael@example.com",
-    role: "Sales Executive",
-    department: "IT",
-    status: "Active",
-    salary: "$60,000",
+const [employees, setEmployees] = useState([]);
+useEffect(()=>{
+  const fetchemp = async ()=>{
+    try{
+      const res = await fetch("https://emsbackend-sbn1.onrender.com/employees");
+      const data = await res.json();
+      setEmployees(data);
+    }
+    catch(err){
+       console.error("Error in fetching employees");
+    }
   }
-]);
+  fetchemp();
+},[]);
 const addEmployee=(emp)=>{
   setEmployees((prev)=>[
     ...prev,{...emp,id:prev.length+1},

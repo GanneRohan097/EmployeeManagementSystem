@@ -11,28 +11,47 @@ import {
 const AddEmployee = ({addEmployee}) => {
 const [Name,setName]=useState();
 const [Email,setEmail]=useState();
-const [Role,setRole]=useState("Software Engineer");
+const [Role,setRole]=useState("Software");
 const [Dept,setDept]=useState("IT");
 const [Status,setStatus]=useState("Active");
 const[Salary,setSalary]=useState();
 console.log(Name,Email,Role,Dept,Status,Salary)
-const handleSubmmit=()=>{
-     const newEmp = {
-      name: Name,
-      email: Email,
-      role: Role,
-      department: Dept,
-      status: Status,
-      salary: `$${Salary}`,
-    };
-    if(Name && Email && Role && Dept && Status && Salary){
-    addEmployee(newEmp);}
-    setName("");
-    setEmail("");
-    setRole("");
-    setDept("");
-    setStatus("");
-    setSalary("");
+const handleSubmmit = async () => {
+  const newEmp = {
+    name: Name,
+    email: Email,
+    role: Role,
+    department: Dept,
+    status: Status,
+    salary: Number(Salary),   // important: send number
+  };
+
+  if (Name && Email && Role && Dept && Status && Salary) {
+    try {
+      const res = await fetch("https://ems-backend.onrender.com/employees/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newEmp)
+      });
+
+      const data = await res.json();
+      console.log("Saved:", data);
+
+      // optional: update local UI also
+      addEmployee(data);
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  }
+
+  setName("");
+  setEmail("");
+  setRole("Software");
+  setDept("IT");
+  setStatus("Active");
+  setSalary("");
 };
   return (
   <div className="">
@@ -77,7 +96,7 @@ const handleSubmmit=()=>{
             Role
           </label>
           <select value={Role} required onChange={(e)=>setRole(e.target.value)} className="border px-3 py-2 w-full rounded-lg outline-none focus:ring-2 focus:ring-blue-400">
-            <option>Software Engineer</option>
+            <option>Software</option>
             <option>HR Manager</option>
             <option>Sales Executive</option>
             <option>Finance Manager</option>
@@ -128,7 +147,7 @@ const handleSubmmit=()=>{
         <button className="px-4 py-2 rounded-lg border hover:bg-gray-100">
           Cancel
         </button>
-        <button type="submit" onClick={handleSubmmit} className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700">
+        <button type="button" onClick={handleSubmmit} className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700">
           Add Employee
         </button>
       </div>
