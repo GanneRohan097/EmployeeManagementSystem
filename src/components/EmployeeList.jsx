@@ -1,5 +1,5 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import EditEmployee from './EditEmployee'
 const EmployeeList = ({setIT,setFinance,setHR,setSales,setActiveEmp,setTotalemp,employees,setpage}) => {
 const Active=employees.filter(e=>e.status==="Active");
 const IT=employees.filter(e=>e.department=="IT");
@@ -12,8 +12,29 @@ setHR(Hr.length);
 setSales(sales.length);
 setTotalemp(employees.length);
 setActiveEmp(Active.length);
+const [prop,setprop] = useState(null);
+
+const handleEdit = (emp)=>{
+     setprop(emp);
+}
+const handleDelete = async (emp)=>{
+   
+     const res = await fetch(`http://localhost:5000/employees/${emp._id}`,
+       {
+        method: "DELETE",
+        headers:{
+          "Content-Type":"application/json",
+        },
+       }
+      
+     )
+     window.location.reload();
+}
+
+
   return (
     <div className='mt-4'>
+       {prop && <EditEmployee employee={prop}/>}
         <div className='bg-white border border-b-gray-600 flex items-center justify-between p-1'>
             <h1 className='font-semibold ml-4'>Employee List</h1>
             <select className='border border-gray-500 w-[20%]'>
@@ -39,7 +60,7 @@ setActiveEmp(Active.length);
                 </thead>
                 <tbody>
 {employees.map((emp) => (
-              <tr key={emp.id} className="border-b bg-white hover:bg-slate-50">
+              <tr key={emp._id} className="border-b bg-white hover:bg-slate-50">
                 <td className="px-4 py-3 font-medium">{emp.name}</td>
                 <td className="px-4 py-3 text-gray-500">{emp.email}</td>
                 <td className="px-4 py-3">{emp.role}</td>
@@ -62,10 +83,14 @@ setActiveEmp(Active.length);
 
                 {/* Actions */}
                 <td className="px-4 py-3 text-center hidden md:block">
-                  <button className="text-blue-600 hover:underline mr-3">
+                  <button 
+                  onClick={()=>handleEdit(emp)}
+                  className="text-blue-600 hover:underline mr-3">
                     Edit
                   </button>
-                  <button className="text-red-600 hover:underline">
+                  <button 
+                  onClick={()=>handleDelete(emp)}
+                  className="text-red-600 hover:underline">
                     Delete
                   </button>
                 </td>

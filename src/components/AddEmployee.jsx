@@ -29,7 +29,7 @@ const AddEmployee = ({ fetchEmployees }) => {
     if (Name && Email && Role && Dept && Status && Salary) {
       try {
         const res = await fetch(
-          "https://emsbackend-sbn1.onrender.com/employees/add",
+          "http://localhost:5000/employees/add",
           {
             method: "POST",
             headers: {
