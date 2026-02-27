@@ -67,7 +67,7 @@ const handleDelete = async (emp)=>{
                 <td className="px-4 py-3">{emp.department}</td>
 
                 {/* Status Badge */}
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 hidden md:block">
                   <span
                     className={`px-3 py-1 text-xs rounded-full ${
                       emp.status === "Active"
@@ -82,7 +82,7 @@ const handleDelete = async (emp)=>{
                 <td className="px-4 py-3">{emp.salary}</td>
 
                 {/* Actions */}
-                <td className="px-4 py-3 text-center hidden md:block">
+                <td className="px-4 py-3 text-center">
                   <button 
                   onClick={()=>handleEdit(emp)}
                   className="text-blue-600 hover:underline mr-3">
