@@ -14,7 +14,7 @@ const EditEmployee = ({ employee }) => {
   };
 
   const handleUpdate = async () => {
-    await fetch(`http://localhost:5000/employees/${form._id}`, {
+    await fetch(`https://emsbackend-sbn1.onrender.com/employees/${form._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)

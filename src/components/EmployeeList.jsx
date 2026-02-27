@@ -19,7 +19,7 @@ const handleEdit = (emp)=>{
 }
 const handleDelete = async (emp)=>{
    
-     const res = await fetch(`http://localhost:5000/employees/${emp._id}`,
+     const res = await fetch(`https://emsbackend-sbn1.onrender.com/employees/${emp._id}`,
        {
         method: "DELETE",
         headers:{
